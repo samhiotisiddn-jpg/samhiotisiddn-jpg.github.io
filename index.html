@@ -253,7 +253,9 @@
 // Preview mode: when the mesh isn't reachable (e.g. the hosted preview), it
 // renders the fallback catalog below and Buy explains how to go live.
 const MESH = 'http://127.0.0.1:10507';
-const MINIAUDIT = 'http://127.0.0.1:10540';
+// Mini-audit runs on a public Cloudflare Worker so this hosted page can really
+// audit visitor sites and capture leads (KV) — no local mesh needed for this.
+const MINIAUDIT = 'https://mini-audit.sam-hiotis.workers.dev';
 
 // Fallback catalog — edit these, or better: manage the real catalog with
 //   curl -X POST localhost:10507/products/add -d '{"name":...,"price_cents":...}'
@@ -370,7 +372,7 @@ auditForm.addEventListener('submit', async (e) => {
   auditResult.innerHTML = '<p>Fetching your homepage and running the checks…</p>';
   try {
     const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 12000);
+    const t = setTimeout(() => ctrl.abort(), 25000);
     const R = await fetch(MINIAUDIT + '/mini-audit', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(email ? { url, email } : { url }), signal: ctrl.signal
@@ -384,7 +386,7 @@ auditForm.addEventListener('submit', async (e) => {
       '<div id="audit-grade">' + a.grade + '</div>' +
       '<div id="audit-score-line">' + a.score + ' of ' + a.total + ' checks passed for <strong>' +
         a.url.replace(/^https?:\/\//, '') + '</strong>' +
-        (d.lead_captured ? ' — report saved, I\\'ll email you within a day.' : '') + '</div>' +
+        (d.lead_captured ? ' — report saved, I\'ll email you within a day.' : '') + '</div>' +
       a.checks.map(c =>
         '<div class="audit-check"><div class="mark ' + (c.ok ? 'ok' : 'bad') + '">' + (c.ok ? '✓' : '✗') + '</div>' +
         '<div><strong>' + (NAMES[c.name] || c.name) + '</strong>' +
@@ -395,9 +397,9 @@ auditForm.addEventListener('submit', async (e) => {
           '<a href="#services">see Services above</a>.</div>'
         : '<div class="audit-upsell">Clean bill of health on the basics. The full audit digs deeper: content, speed budgets, accessibility, analytics.</div>');
   } catch (e2) {
-    auditResult.innerHTML = '<p>The mini-audit service isn\\'t reachable from this preview. ' +
-      'Run the mesh locally (<code>node scripts/start.js</code>) and open ' +
-      '<code>http://localhost:10504/store.html</code>, or email me your URL and I\\'ll run it manually.</p>';
+    auditResult.innerHTML = '<p>That address couldn\'t be reached just now — double-check the spelling ' +
+      '(e.g. <code>yourbusiness.com.au</code>) and try again. If it keeps failing, email me your URL at ' +
+      '<a href="mailto:sam.hiotis.iddn@gmail.com">sam.hiotis.iddn@gmail.com</a> and I\'ll run the audit manually.</p>';
   }
   btn.disabled = false; btn.textContent = 'Audit my site';
 });
