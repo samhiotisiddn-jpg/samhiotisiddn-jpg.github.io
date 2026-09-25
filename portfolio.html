@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Sam Hiotis, Digital Services, Albury NSW</title>
+<meta name="description" content="Real website audits with real findings. See the evidence before you hire.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fff1d0; --cream-light: #fbfffb; --cream-deep: #ffdd99;
+    --mint: #98d09f; --mint-soft: #cae6cc; --ink: #1e1e1e; --forest: #2e6130;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--cream); color: var(--ink); font-family: 'Inter', sans-serif; font-size: 18px; line-height: 1.55; }
+  .serif { font-family: 'Fraunces', Georgia, serif; font-weight: 300; }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; }
+  header { text-align: center; margin-bottom: 3rem; }
+  h1 { font-family: 'Fraunces', Georgia, serif; font-weight: 300; font-size: 2.5rem; color: var(--forest); margin-bottom: 0.5rem; }
+  .sub { color: #555; font-size: 1.1rem; }
+  .audit-card { background: var(--cream-light); border: 2px solid var(--cream-deep); border-radius: 12px; padding: 1.5rem 2rem; margin-bottom: 1.5rem; }
+  .audit-card h2 { font-family: 'Fraunces', Georgia, serif; font-weight: 400; font-size: 1.4rem; color: var(--forest); margin-bottom: 0.3rem; }
+  .audit-url { font-size: 0.85rem; color: #777; word-break: break-all; margin-bottom: 0.8rem; }
+  .grade { display: inline-block; background: var(--mint); color: var(--ink); font-weight: 600; font-size: 0.9rem; padding: 0.2rem 0.7rem; border-radius: 20px; margin-right: 0.5rem; }
+  .grade.b { background: var(--cream-deep); }
+  .findings { margin-top: 0.8rem; font-size: 0.95rem; }
+  .findings li { margin-bottom: 0.3rem; }
+  .report-link { display: inline-block; margin-top: 0.8rem; color: var(--forest); font-weight: 500; text-decoration: none; border-bottom: 2px solid var(--mint); }
+  .report-link:hover { color: var(--ink); }
+  .cta { text-align: center; margin-top: 3rem; padding: 2rem; background: var(--mint-soft); border-radius: 12px; }
+  .cta p { margin-bottom: 1rem; }
+  .btn { display: inline-block; background: var(--forest); color: white; padding: 0.8rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 500; }
+  .btn:hover { background: var(--ink); }
+  footer { text-align: center; margin-top: 3rem; font-size: 0.85rem; color: #888; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Real Audits, Real Findings</h1>
+  <p class="sub">Every audit below was run against a live website. Click through to see the full report.</p>
+</header>
+
+<div class="audit-card">
+  <h2>Drop Bear Engineering <span class="grade">91%</span></h2>
+  <p class="audit-url">dropbearengineering.com.au — Shopify store, Brisbane</p>
+  <p>Full 23-point audit: 21 of 23 checks pass. The two gaps: 7 of 19 homepage images missing alt text, and title tags don't mention Brisbane or 4WD (their two strongest local search terms). First-byte time fluctuates 2.1–2.8s — right at the mobile-bounce threshold.</p>
+  <a class="report-link" href="reports/report-1.html" target="_blank">View full report →</a>
+</div>
+
+<div class="audit-card">
+  <h2>The River Deck Cafe <span class="grade b">B</span></h2>
+  <p class="audit-url">riverdeckcafe.com.au — Cafe, Albury</p>
+  <p>Mini-audit: 5 of 6 checks pass. One issue: the Google listing title is duplicated and truncated at 110 characters, cutting off mid-word in search results.</p>
+  <a class="report-link" href="reports/report-2.html" target="_blank">View mini-audit →</a>
+</div>
+
+<div class="audit-card">
+  <h2>Albury Entertainment Centre <span class="grade b">B</span></h2>
+  <p class="audit-url">alburyentertainmentcentre.com.au — Events venue, Albury</p>
+  <p>Mini-audit: 5 of 6 checks pass. One gap: no meta description, so Google writes its own snippet — usually pulling random navigation text instead of a proper summary.</p>
+  <a class="report-link" href="reports/report-3.html" target="_blank">View mini-audit →</a>
+</div>
+
+<div class="audit-card">
+  <h2>SS&amp;A Club Albury <span class="grade b">B</span></h2>
+  <p class="audit-url">ssaclub.com.au — Club, Albury</p>
+  <p>Mini-audit: 5 of 6 checks pass. One security gap: none of the 6 standard security headers are present, leaving visitors exposed to clickjacking and content-type attacks.</p>
+  <a class="report-link" href="reports/report-4.html" target="_blank">View mini-audit →</a>
+</div>
+
+<div class="audit-card">
+  <h2>MAMA Albury <span class="grade b">B</span></h2>
+  <p class="audit-url">mamalbury.com.au — Arts venue, Albury</p>
+  <p>Mini-audit: 5 of 6 checks pass. One security gap: none of the 6 standard security headers are present. Modern browsers are starting to warn users about sites without these.</p>
+  <a class="report-link" href="reports/report-5.html" target="_blank">View mini-audit →</a>
+</div>
+
+<div class="cta">
+  <p class="serif" style="font-size:1.3rem;">Want your site audited?</p>
+  <p>Free 6-point mini-audit, or the full 23-point report with fix instructions — $490, 2-day turnaround.</p>
+  <a class="btn" href="/">Get your free mini-audit</a>
+</div>
+
+<footer>
+  <p>Sam Hiotis — Digital Services, Albury NSW · All audits run against live sites, September 2026</p>
+</footer>
+</div>
+</body>
+</html>
