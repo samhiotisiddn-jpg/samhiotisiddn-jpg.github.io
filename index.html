@@ -215,7 +215,7 @@
   </div>
   <div class="step">
     <div class="step-num">02</div>
-    <div><h3>Pay securely</h3><p>Checkout is handled by Stripe — card, Apple Pay, Google Pay. You get a receipt immediately, I get notified the moment you pay.</p></div>
+    <div><h3>Order &amp; pay</h3><p>Click Buy and send the pre-filled order email — I reply with a secure invoice (card, Apple Pay, Google Pay) within one business day. You get a receipt the moment you pay.</p></div>
   </div>
   <div class="step">
     <div class="step-num">03</div>
@@ -250,13 +250,16 @@
 // Live mode: when served by the mesh (http://localhost:10504/store.html) this
 // page loads the product catalog from the revenue agent (10507) and Buy buttons
 // create real Stripe Checkout Sessions via /checkout.
-// Preview mode: when the mesh isn't reachable (e.g. the hosted preview), it
-// renders the fallback catalog below and Buy explains how to go live.
+// Hosted mode: Buy routes through the public checkout relay (order by email /
+// Stripe Payment Link when enabled).
 const MESH = 'http://127.0.0.1:10507';
 // Mini-audit runs on a public Cloudflare Worker so this hosted page can really
 // audit visitor sites and capture leads (KV) — no local mesh needed for this.
 const MINIAUDIT = 'https://mini-audit.sam-hiotis.workers.dev';
 
+// Checkout relay (public Worker): turns Buy clicks into real order paths even
+// on the hosted preview — invoice email now, Stripe Payment Links once enabled.
+const CHECKOUT = 'https://checkout-relay.sam-hiotis.workers.dev';
 // Fallback catalog — edit these, or better: manage the real catalog with
 //   curl -X POST localhost:10507/products/add -d '{"name":...,"price_cents":...}'
 const FALLBACK_PRODUCTS = [
@@ -307,10 +310,22 @@ function showNote(title, body) {
 
 async function buy(id, live) {
   if (!live) {
-    return showNote('Preview mode', 'This is the hosted preview, so checkout is dormant. ' +
-      'When this page is served by your mesh (<code>node scripts/start.js</code>, then ' +
-      '<code>http://localhost:10504/store.html</code>) this button creates a real Stripe checkout link. ' +
-      'Until then: email me and I\'ll invoice you directly.');
+    // Hosted preview: route through the public checkout relay — real orders,
+    // invoice by email (and PayPal/Stripe links once enabled server-side).
+    const num = String(id).replace(/^f/, '');
+    showNote('One moment…', 'Preparing your order.');
+    try {
+      const R = await fetch(CHECKOUT + '/checkout?product=' + encodeURIComponent(num));
+      const d = await R.json();
+      if (d.stripe) { window.location.href = d.stripe; return; }
+      const p = d.product || { name: 'service', price: '' };
+      let body = '<strong>' + p.name + '</strong> — ' + p.price + '<br><br>' +
+        '<a class="btn small" href="' + d.invoice_email + '">Order by email</a> — one click opens a pre-addressed email; I reply with an invoice (card, Apple Pay, Google Pay) within one business day.';
+      if (d.paypal) body += '<br><br>Prefer to pay now? <a href="' + d.paypal + '">' + d.paypal.replace('https://', '') + '</a>';
+      return showNote('Order ' + p.name, body);
+    } catch (e) {
+      return showNote('Order by email', 'Email <a href="mailto:sam.hiotis.iddn@gmail.com">sam.hiotis.iddn@gmail.com</a> with the service you want and I\'ll invoice you within one business day.');
+    }
   }
   showNote('One moment…', 'Creating your secure checkout session.');
   try {
@@ -348,7 +363,7 @@ async function boot() {
     pill.textContent = 'preview catalog';
     pill.className = 'preview';
     pill.id = 'mode-pill';
-    document.getElementById('footer-mode').textContent = 'hosted preview · checkout dormant';
+    document.getElementById('footer-mode').textContent = 'hosted store · orders via secure relay';
   }
 }
 boot();
