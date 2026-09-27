@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Albury-Wodonga Business Web Health Check — who’s easy to find, who’s invisible</title>
+<meta name="description" content="A free, plain-English look at how Albury-Wodonga’s best-known local businesses show up online — site speed, mobile setup, and the small fixes that win customers. By Sam Hiotis, local web developer.">
+<meta property="og:title" content="Albury-Wodonga Business Web Health Check">
+<meta property="og:description" content="Who’s easy to find online in Albury-Wodonga — and who’s invisible. A free local web health check.">
+<meta property="og:type" content="article">
+<link rel="canonical" href="https://samhiotisiddn-jpg.github.io/albury-wodonga-web-check.html">
+<style>
+  :root { --forest: #1d3b2a; --cream: #faf7f0; --ink: #1a1a1a; --accent: #c8541e; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; background: var(--cream); color: var(--ink); line-height: 1.65; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 48px 22px 80px; }
+  .kicker { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 14px; }
+  h1 { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: clamp(30px, 5vw, 44px); line-height: 1.15; margin-bottom: 18px; }
+  h1 em { color: var(--forest); }
+  .standfirst { font-size: 19px; color: #3a3a3a; margin-bottom: 34px; }
+  .meta { font-size: 13px; color: #777; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid #e0d9cc; }
+  h2 { font-family: Georgia, serif; font-weight: 400; font-size: 26px; margin: 44px 0 14px; color: var(--forest); }
+  p { margin-bottom: 16px; }
+  .biz { background: #fff; border: 1px solid #e5ddcd; border-radius: 10px; padding: 22px 24px; margin: 20px 0; }
+  .biz h3 { font-size: 19px; margin-bottom: 4px; }
+  .biz .grade { display:inline-block; font-weight: 700; font-size: 14px; padding: 3px 12px; border-radius: 999px; margin-left: 8px; vertical-align: 2px; }
+  .g-a { background:#e3f1e7; color:#1d6b35; } .g-b { background:#fdf3e0; color:#9a6a0a; } .g-c { background:#fde7e0; color:#b03a12; }
+  .biz .url { font-size: 13px; color:#888; margin-bottom: 10px; display:block; }
+  .biz ul { margin: 8px 0 0 20px; font-size: 15px; }
+  .biz li { margin-bottom: 6px; }
+  .callout { background: var(--forest); color: #f2efe6; border-radius: 10px; padding: 26px 28px; margin: 44px 0; }
+  .callout h2 { color: #fff; margin-top: 0; }
+  .callout a.btn { display:inline-block; background: var(--accent); color:#fff; text-decoration:none; padding: 12px 26px; border-radius: 6px; font-weight: 600; margin-top: 10px; }
+  .method { font-size: 14px; color: #666; background: #f3eee3; border-radius: 8px; padding: 18px 20px; margin-top: 44px; }
+  footer { margin-top: 50px; padding-top: 22px; border-top: 1px solid #e0d9cc; font-size: 14px; color: #666; }
+  footer a { color: var(--forest); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">Free local report · September 2026</div>
+  <h1>Albury-Wodonga’s best-known businesses, <em>graded on their websites.</em></h1>
+  <p class="standfirst">I ran the five best-known hospitality and venue websites in Albury-Wodonga through a 23-point technical health check — the same checks Google and your customers’ phones effectively run. Here’s what I found, in plain English, with the fixes that matter most.</p>
+  <div class="meta">By Sam Hiotis · Web developer, Albury NSW · Data collected 25 September 2026 · This report is free to share.</div>
+
+  <h2>Why this matters</h2>
+  <p>When someone searches “dinner Albury” or “wedding venue Wodonga”, the businesses below are who they find. But a well-known name doesn’t mean a healthy website — and an unhealthy website quietly loses bookings every week: pages that load slowly on a phone get abandoned, missing descriptions mean Google guesses what you do, and broken mobile layouts send customers to the next result.</p>
+  <p>Every issue listed here is fixable, most in under a day of work. I’ve graded each site on the percentage of 23 checks it passed.</p>
+
+  <h2>The results</h2>
+
+  <div class="biz">
+    <h3>The River Deck <span class="grade g-b">78% — C+</span></h3>
+    <span class="url">riverdeckcafe.com.au · cafe &amp; restaurant, Noreuil Park</span>
+    <ul>
+      <li><strong>Takes 3.5 seconds before the page even starts loading</strong> (TTFB 3523ms) — most mobile visitors leave before 3s.</li>
+      <li><strong>No online booking or enquiry form anywhere on the site</strong> — customers have to phone during business hours.</li>
+      <li>Homepage is 697KB of HTML — about 7× heavier than it needs to be.</li>
+      <li>39 of 41 images have no alt text — invisible to Google Images and screen readers.</li>
+      <li>Page title is 110 characters — Google cuts it off mid-sentence in search results.</li>
+    </ul>
+  </div>
+
+  <div class="biz">
+    <h3>Albury Entertainment Centre <span class="grade g-b">70% — C</span></h3>
+    <span class="url">alburyentertainmentcentre.com.au · council-run events venue</span>
+    <ul>
+      <li><strong>No meta description at all</strong> — Google writes its own (usually bad) summary of the venue in search results.</li>
+      <li><strong>Zero H1 headings on the homepage</strong> — search engines can’t tell what the page is about.</li>
+      <li>54 of 57 images missing alt text.</li>
+      <li>No Open Graph tags — shared links on Facebook show a blank, imageless preview.</li>
+      <li>No enquiry form; slow server response (2.5s TTFB); no sitemap.</li>
+    </ul>
+  </div>
+
+  <div class="biz">
+    <h3>MAMA — Murray Art Museum Albury <span class="grade g-b">83% — B−</span></h3>
+    <span class="url">mamalbury.com.au · art museum</span>
+    <ul>
+      <li>Homepage HTML weighs <strong>1,049KB</strong> — the heaviest of the five, heavy enough to stutter on older phones.</li>
+      <li>Only 1 of 6 standard security headers present.</li>
+      <li>No H1 heading; no sitemap to help Google index exhibitions.</li>
+    </ul>
+  </div>
+
+  <div class="biz">
+    <h3>Drop Bear Coffee <span class="grade g-a">87% — B+</span></h3>
+    <span class="url">dropbearcoffee.com.au · café &amp; roastery</span>
+    <ul>
+      <li>Best of the five — but the server still takes <strong>4.4 seconds</strong> to respond (slowest of the group).</li>
+      <li>Page title doesn’t mention Albury — a free local-SEO win going unused.</li>
+      <li>7 of 19 images missing alt text.</li>
+    </ul>
+  </div>
+
+  <div class="biz">
+    <h3>SS&amp;A Club <span class="grade g-c">0% — site gone</span></h3>
+    <span class="url">ssanda.com.au · club &amp; venue</span>
+    <ul>
+      <li><strong>The domain no longer resolves to a website at all</strong> — it currently shows a domain-parking page. Anyone searching for the club online right now finds a dead end. If this is your business, this is a five-alarm fix.</li>
+    </ul>
+  </div>
+
+  <h2>The pattern</h2>
+  <p>Not one of the five passed everything. The same three problems appeared almost everywhere: <strong>slow servers</strong> (4 of 5 took over 2 seconds to respond), <strong>missing alt text</strong> (over 100 undescribed images across the group), and <strong>missing or bloated page structure</strong>. None of these require a redesign — they’re one-day fixes that directly affect whether a customer books or bounces.</p>
+
+  <div class="callout">
+    <h2>How does your site score?</h2>
+    <p>I’ll run the same 23-point check on any Albury-Wodonga business website, free, and send you the graded report. No signup, no obligation — it takes about a minute.</p>
+    <a class="btn" href="/#mini-audit">Get my free mini-audit</a>
+  </div>
+
+  <div class="method">
+    <strong>Method:</strong> each homepage was fetched and checked on 25 September 2026 against 23 technical criteria across performance (server response, page weight), SEO (title, meta description, headings, sitemap), accessibility (image alt text), security headers, and conversion basics (presence of an enquiry/booking form). Grades are the percentage of checks passed. This is an automated technical snapshot, not a design review. Business names are used for factual commentary under nominative fair use; if your business is listed and you’d like the underlying full report, it’s yours on request.
+  </div>
+
+  <footer>
+    Compiled by <a href="/">Sam Hiotis</a>, web developer — Albury NSW. Fixed-price websites, audits and care plans for local businesses. <a href="mailto:sam.hiotis.iddn@gmail.com">sam.hiotis.iddn@gmail.com</a>
+  </footer>
+</div>
+</body>
+</html>
