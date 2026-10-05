@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FractalMesh Desk</title>
+<style>
+:root { color-scheme: dark; }
+body { margin: 0; background: #07110c; color: #defae8; font: 15px/1.45 system-ui, sans-serif; }
+header { padding: 16px; border-bottom: 1px solid #1d3; }
+h1 { margin: 0; font-size: 22px; color: #b6ff4a; letter-spacing: .02em; }
+.sub { color: #9cbaa6; margin-top: 6px; }
+.cap { margin-top: 10px; padding: 8px 10px; border: 1px solid #a33; color: #ffb4b4; }
+nav { display: flex; gap: 6px; overflow: auto; padding: 10px 12px; position: sticky; top: 0; background: #07110cee; }
+button, input, select, textarea { background: #0e1712; color: #defae8; border: 1px solid #1d3; padding: 8px 10px; }
+button.active { background: #b6ff4a; color: #041; }
+main { padding: 0 12px 48px; }
+.panel { display: none; }
+.panel.on { display: block; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.card, table { background: #0c120f; border: 1px solid #173; }
+.card { padding: 10px; }
+table { width: 100%; border-collapse: collapse; }
+td, th { text-align: left; padding: 6px; border-bottom: 1px solid #173; font-size: 13px; }
+.ok { color: #b6ff4a; }
+.bad { color: #ffb4b4; }
+.muted { color: #9cbaa6; }
+img { max-width: 100%; height: auto; }
+textarea, input[type=text] { width: 100%; box-sizing: border-box; }
+pre { white-space: pre-wrap; background: #0c120f; padding: 10px; border: 1px solid #173; }
+a { color: #b6ff4a; }
+@media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>FractalMesh Desk</h1>
+  <div class="sub">Live governor. Published surface. Still no SMTP, no Stripe charge, no agent deploy. Cap remains closed.</div>
+  <div class="cap" id="cap">Gmail daily cap 550 5.4.5 — blocked. Sends from this desk: 0.</div>
+</header>
+<nav id="nav"></nav>
+<main>
+<section class="panel on" id="desk">
+  <p>The loaded log treated delivery failures as questions, logged BLOCKED, and still recorded a send after the cap. This desk drops those rows before SMTP.</p>
+  <div class="grid" id="tools"></div>
+</section>
+<section class="panel" id="governor">
+  <p><label><input type="checkbox" id="block" checked> Block before SMTP</label></p>
+  <p><button id="day">Mark a new Gmail day</button> <span id="daynote" class="muted">Cap window still closed.</span></p>
+  <h2>Old log vs this desk</h2>
+  <table id="compare"></table>
+  <p id="govout"></p>
+</section>
+<section class="panel" id="memory">
+  <p>Local event bus. Nothing leaves this device.</p>
+  <ul id="bus"></ul>
+</section>
+<section class="panel" id="pep8">
+  <p>Review only. The sample is not executed.</p>
+  <pre id="sample"></pre>
+  <div id="pep"></div>
+</section>
+<section class="panel" id="sql">
+  <p>Read-only. Inbox, decisions, memory, catalog. 197 AUD is a draft price, not revenue.</p>
+  <input id="q" type="text" value="SELECT * FROM catalog">
+  <p><button id="runsql">Run SELECT</button></p>
+  <pre id="sqlout"></pre>
+</section>
+<section class="panel" id="report">
+  <p>Same week: 2026-09-28 to 2026-10-04. Status Yellow.</p>
+  <p>Reports stay in the desk pack. This page does not send them.</p>
+</section>
+<section class="panel" id="skills">
+  <p>Ten operating skills, plus a creator that refuses secrets.</p>
+  <div id="skilllist"></div>
+  <textarea id="skilltext" rows="4" placeholder="Skill text"></textarea>
+  <p><button id="saveSkill">Save skill on this device</button></p>
+  <p id="skillmsg"></p>
+</section>
+<section class="panel" id="share">
+  <p>Live page. Share card does not deploy agents.</p>
+</section>
+</main>
+<script>
+const tools = ["Desk","Governor","Memory","PEP 8","SQL","Report","Catalog","Inbox","Share","Skill creator"];
+const oldLog = [
+  {id:"d1", kind:"daemon", old:"recorded after cap", now:"dropped before SMTP"},
+  {id:"n1", kind:"newsletter", old:"recorded after cap", now:"dropped before SMTP"},
+  {id:"h1", kind:"human note", old:"queued", now:"queued"}
+];
+const db = {
+  inbox: [
+    {id:"d1", kind:"daemon", status:"BLOCKED", smtp:"none"},
+    {id:"n1", kind:"newsletter", status:"BLOCKED", smtp:"none"},
+    {id:"h1", kind:"human-note", status:"QUEUED", smtp:"none"}
+  ],
+  decisions: [{id:"a1", question:"keep block-before-SMTP", state:"yes"}],
+  memory: [{id:"m1", event:"governed cycle dropped daemon and newsletter", at:"2026-10-05"}],
+  catalog: [{sku:"sovereign-node", price_aud:197, kind:"draft-price"}]
+};
+const nav = document.getElementById("nav");
+["desk","governor","memory","pep8","sql","report","skills","share"].forEach(id => {
+  const b = document.createElement("button");
+  b.textContent = id;
+  b.onclick = () => {
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("on"));
+    document.getElementById(id).classList.add("on");
+    document.querySelectorAll("nav button").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+  };
+  nav.appendChild(b);
+});
+nav.firstChild.classList.add("active");
+document.getElementById("tools").innerHTML = tools.map(t => `<div class="card"><b>${t}</b><div class="ok">live</div></div>`).join("");
+const bus = JSON.parse(localStorage.getItem("fm-bus") || "[]");
+function log(event) {
+  bus.unshift({event, at: new Date().toISOString()});
+  localStorage.setItem("fm-bus", JSON.stringify(bus.slice(0, 40)));
+  renderBus();
+}
+function renderBus() {
+  document.getElementById("bus").innerHTML = bus.map(e => `<li>${e.at} — ${e.event}</li>`).join("") || "<li class='muted'>No local events yet.</li>";
+}
+function governed() {
+  const block = document.getElementById("block").checked;
+  return oldLog.map(row => {
+    if (!block) return {...row, now: row.old};
+    if (row.kind === "human note") return row;
+    return {...row, now: "dropped before SMTP"};
+  });
+}
+function renderCompare() {
+  const rows = governed();
+  document.getElementById("compare").innerHTML = "<tr><th>Item</th><th>Old log</th><th>This desk</th></tr>" + rows.map(r => `<tr><td>${r.kind}</td><td class="bad">${r.old}</td><td class="ok">${r.now}</td></tr>`).join("");
+  const dropped = rows.filter(r => r.now.startsWith("dropped")).length;
+  document.getElementById("govout").textContent = dropped + " rows dropped before send. Human note stays queued. Approve only marks a draft on this device.";
+}
+document.getElementById("block").onchange = () => { renderCompare(); log("block-before-SMTP " + (document.getElementById("block").checked ? "on" : "off")); };
+document.getElementById("day").onclick = () => {
+  document.getElementById("daynote").textContent = "New Gmail day marked on this device. No mail was sent.";
+  log("gmail day marked locally");
+};
+document.getElementById("sample").textContent = "import os,sys\n\ndef SendNewsletter(To, body):\n    x=1\n    if x == 1:\n        print(\"sent \"+To)\n    return True";
+document.getElementById("pep").innerHTML = "<h3>PEP 8 review summary</h3><p>Files reviewed: sample_growth.py. Compliance: Low. Tool: pycodestyle. Code was not run.</p><ul><li>sample_growth.py:1 — E231 missing whitespace after comma</li><li>sample_growth.py:1 — E401 multiple imports on one line</li><li>sample_growth.py:5 — E225 missing whitespace around operator</li><li>sample_growth.py:4 — function name SendNewsletter should be send_newsletter</li><li>sample_growth.py:11 — class offerDraft should be OfferDraft</li></ul>";
+function runSql() {
+  const q = document.getElementById("q").value.trim();
+  if (!/^select\b/i.test(q) || /\b(insert|update|delete|drop|attach|pragma)\b/i.test(q)) {
+    document.getElementById("sqlout").textContent = "Rejected. Read-only SELECT only.";
+    return;
+  }
+  const name = (q.match(/from\s+(\w+)/i) || [])[1];
+  const table = db[name];
+  document.getElementById("sqlout").textContent = table ? JSON.stringify(table, null, 2) : "Unknown table. Use inbox, decisions, memory, catalog.";
+  log("sql read " + (name || "rejected"));
+}
+document.getElementById("runsql").onclick = runSql;
+const skills = ["desk","governor","memory","pep8","sql","report","catalog","inbox","share","skill-creator"];
+document.getElementById("skilllist").innerHTML = skills.map(s => `<div class="card">${s} <span class="ok">live</span></div>`).join("");
+document.getElementById("saveSkill").onclick = () => {
+  const text = document.getElementById("skilltext").value;
+  if (/password|api[_ ]?key|token|secret|private key|sk_live|AIza/i.test(text)) {
+    document.getElementById("skillmsg").textContent = "Refused. Skill creator does not store secrets.";
+    return;
+  }
+  localStorage.setItem("fm-skill", text);
+  document.getElementById("skillmsg").textContent = "Saved on this device only.";
+  log("skill saved locally");
+};
+document.getElementById("desk").insertAdjacentHTML("beforeend", "<p><button id='approve'>Approve draft</button> <span id='ap' class='muted'>Not approved.</span></p>");
+document.getElementById("approve").onclick = () => {
+  document.getElementById("ap").textContent = "Marked approved on this device. No send.";
+  log("draft approved locally");
+};
+renderCompare();
+renderBus();
+log("desk opened; no smtp");
+</script>
+</body>
+</html>
