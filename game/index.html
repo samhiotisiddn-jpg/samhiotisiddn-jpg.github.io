@@ -64,7 +64,7 @@ const CH=[{n:[57,60,64,67],b:45},{n:[53,57,60,64],b:41},{n:[48,52,55,59],b:36},{
 const nf=m=>440*Math.pow(2,(m-69)/12);
 
 /* ── AUDIO: generative synthwave engine + SFX ── */
-let AC=null,mG,sG,dly,noiseBuf,musicMode='proc',step=0,nextT=0;const bpm=104;
+let AC=null,mG,sG,dly,noiseBuf,musicMode='proc',musicStep=0,nextT=0;const bpm=104;
 const au=document.getElementById('radio');
 function ac(){if(!AC){AC=new(window.AudioContext||window.webkitAudioContext)();
  const cp=AC.createDynamicsCompressor();cp.threshold.value=-18;cp.connect(AC.destination);
@@ -115,7 +115,7 @@ function playS(s,t){const bar=Math.floor(t/(60/bpm*4))%4,ch=CH[bar],sp=60/bpm/4;
  if(s===0)ch.n.forEach(n=>padV(nf(n),t,60/bpm*4));}
 setInterval(()=>{if(!AC||musicMode!=='proc')return;
  if(!nextT)nextT=AC.currentTime+.06;
- while(nextT<AC.currentTime+.14){playS(step,nextT);step=(step+1)%16;nextT+=60/bpm/4}},30);
+ while(nextT<AC.currentTime+.14){playS(musicStep,nextT);musicStep=(musicStep+1)%16;nextT+=60/bpm/4}},30);
 function setMusic(m){musicMode=m;au.pause();
  if(m==='off'||!AC&&!ac)return;if(m==='proc'){ac();return}
  if(m==='radio'){ac();const play=file=>{au.src=file;au.volume=.55;au.play().catch(()=>{})};
