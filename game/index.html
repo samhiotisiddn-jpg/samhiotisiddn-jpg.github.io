@@ -18,7 +18,7 @@ canvas{display:block}
 select{background:#0a0a12;border:1px solid #a855f7;color:#a855f7;font-family:inherit;font-size:12px;padding:7px 12px;border-radius:3px;margin-top:14px}
 #over h2{color:#f43f5e;font-size:26px;letter-spacing:3px;margin-bottom:10px}
 #over .st{color:#10b981;font-size:14px;margin:3px 0}
-#touch{position:fixed;inset:auto 0 0 0;display:none;justify-content:space-between;padding:18px 16px calc(18px + env(safe-area-inset-bottom));z-index:5;pointer-events:none}
+#touch{position:fixed;inset:auto 0 0 0;display:flex;justify-content:space-between;padding:18px 16px calc(18px + env(safe-area-inset-bottom));z-index:8;pointer-events:none}
 #touch div{display:flex;gap:12px;pointer-events:auto;align-items:flex-end}
 #touch b{width:76px;height:76px;border:1px solid #1a1a2e;border-radius:16px;background:rgba(10,10,18,.72);color:#06b6d4;display:flex;align-items:center;justify-content:center;font-size:12px;user-select:none;-webkit-user-select:none;touch-action:none}
 #touch b:active{background:#06b6d4;color:#000}
@@ -27,7 +27,7 @@ select{background:#0a0a12;border:1px solid #a855f7;color:#a855f7;font-family:inh
 <canvas id="cv"></canvas>
 <div class="ov" id="menu">
   <h1>VOID <span>COMBAT</span> SIM</h1>
-  <p>THRUST <b style="color:#06b6d4">↑/W</b> · TURN <b style="color:#06b6d4">←→/AD</b> · CANNON <b style="color:#06b6d4">SPACE</b> · HOMING MISSILE <b style="color:#06b6d4">SHIFT</b> · PAUSE <b style="color:#06b6d4">P</b></p>
+  <p>Touch only. Left side turns and thrusts. Right side fires and launches missiles. Pause is on the right.</p>
   <p>Waves escalate: scouts <b style="color:#f43f5e">◆</b> fighters <b style="color:#a855f7">◆</b> gunships <b style="color:#f59e0b">◆</b>. Collect drops to repair shields and restock missiles. High scores are logged to the compliance ledger.</p>
   <select id="mus">
     <option value="proc">MUSIC: NEON DRIFT ENGINE — procedural synthwave</option>
@@ -44,7 +44,7 @@ select{background:#0a0a12;border:1px solid #a855f7;color:#a855f7;font-family:inh
 <div id="pad">PAD SCAN</div>
 <div id="touch"><div>
   <b id="tL">⟲</b><b id="tR">⟳</b><b id="tU">THRUST</b></div><div>
-  <b id="tM">MSLE</b><b id="tF">FIRE</b></div></div>
+  <b id="tM">MSLE</b><b id="tF">FIRE</b><b id="tP">PAUSE</b></div></div>
 <audio id="radio" loop></audio>
 <script>
 "use strict";
@@ -342,15 +342,15 @@ addEventListener('keyup',e=>{
  if(e.key==='ArrowLeft'||e.key==='a'||e.key==='A')keys.left=false;
  if(e.key==='ArrowRight'||e.key==='d'||e.key==='D')keys.right=false;
  if(e.key===' ')keys.fire=false});
-const touchUi=matchMedia('(pointer:coarse)').matches||'ontouchstart'in window;
-if(touchUi){document.getElementById('touch').style.display='flex';
- const bind=(id,k)=>{const el=document.getElementById(id);
-  el.addEventListener('touchstart',e=>{e.preventDefault();keys[k]=true;keys['touch'+k]=true;if(k==='fire')keys.touchFire=true;if(k==='missile')keys.touchMissile=true},{passive:false});
-  el.addEventListener('touchend',e=>{e.preventDefault();keys[k]=false;keys['touch'+k]=false;if(k==='fire')keys.touchFire=false;if(k==='missile')keys.touchMissile=false},{passive:false});
-  el.addEventListener('touchcancel',()=>{keys[k]=false;keys.touchFire=false;keys.touchMissile=false});
- };
- bind('tL','left');bind('tR','right');bind('tU','up');bind('tF','fire');bind('tM','missile');
-}
+document.getElementById('touch').style.display='flex';
+const bind=(id,k)=>{const el=document.getElementById(id);
+ el.addEventListener('touchstart',e=>{e.preventDefault();keys[k]=true;keys['touch'+k]=true;if(k==='fire')keys.touchFire=true;if(k==='missile')keys.touchMissile=true},{passive:false});
+ el.addEventListener('touchend',e=>{e.preventDefault();keys[k]=false;keys['touch'+k]=false;if(k==='fire')keys.touchFire=false;if(k==='missile')keys.touchMissile=false},{passive:false});
+ el.addEventListener('touchcancel',()=>{keys[k]=false;keys.touchFire=false;keys.touchMissile=false});
+};
+bind('tL','left');bind('tR','right');bind('tU','up');bind('tF','fire');bind('tM','missile');
+document.getElementById('tP').addEventListener('touchstart',e=>{e.preventDefault();if(running)paused=!paused},{passive:false});
+document.addEventListener('touchmove',e=>{if(e.target.closest('#touch'))e.preventDefault()},{passive:false});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&running)paused=true});
 reset();running=false;requestAnimationFrame(loop);
 </script></body></html>
