@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aphelion</title>
+<meta name="description" content="Aphelion is a top-down space shooter. Survive enemy waves, grab power-ups, and chase the high score.">
+<script>
+(function () {
+  var host = location.host;
+  var og = "https://" + host + "/og.jpg";
+  var xBanner = "https://" + host + "/x-banner.jpg";
+  function meta(attr, name, content) {
+    var el = document.createElement("meta");
+    el.setAttribute(attr, name);
+    el.setAttribute("content", content);
+    document.head.appendChild(el);
+  }
+  meta("property", "og:title", "Aphelion");
+  meta("property", "og:type", "x:game");
+  meta("property", "og:image", og);
+  meta("property", "og:image:width", "1200");
+  meta("property", "og:image:height", "630");
+  meta("property", "x:game:image", xBanner);
+  meta("property", "x:game:image:width", "1200");
+  meta("property", "x:game:image:height", "264");
+  meta("name", "twitter:card", "summary_large_image");
+  meta("name", "twitter:image", og);
+})();
+</script>
+</head>
+<body>
+<p>Aphelion share cards are at <a href="/og.jpg">og.jpg</a> and <a href="/x-banner.jpg">x-banner.jpg</a>.</p>
+</body>
+</html>
